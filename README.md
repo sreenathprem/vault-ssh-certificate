@@ -48,7 +48,7 @@ The TF Runs in a TFE workspace would need to authenticate with Vault to sign the
 
 More details here -> [Dynamic Credentials with the Vault Provider](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/dynamic-provider-credentials/vault-configuration)
 
-## Authenticating between Vault and Azure
+## Authenticating between TFE and Azure
 
 In this demo, I am provisioning a Azure Linux VM to talk to the Management Server. For this purpose my TF runs should authenticate with Azure. Here again I am leveraging the OIDC integration between TFE and Azure. 
 
