@@ -53,3 +53,24 @@ More details here -> [Dynamic Credentials with the Vault Provider](https://devel
 In this demo, I am provisioning a Azure Linux VM to talk to the Management Server. For this purpose my TF runs should authenticate with Azure. Here again I am leveraging the OIDC integration between TFE and Azure. 
 
 More details here -> [Dynamic Credentials with the Azure Provider](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/dynamic-provider-credentials/azure-configuration)
+
+## Setting up the Management Server
+
+The Management Server needs to be setup to trust the CA which is used by Vault. This can configured in the sshd_config inside Vault
+
+1. Fetch the public key of the CA from Vault
+```
+vault read -field=public_key ssh-client-signer/config/ca > /etc/ssh/trusted-user-ca-keys.pem
+```
+2. Copy this key to the Management Server
+3. Edit the sshd_config to trust this public key
+```
+# /etc/ssh/sshd_config
+# ...
+TrustedUserCAKeys /etc/ssh/trusted-user-ca-keys.pem
+```
+4. In my case, I also had to add the additional parameters to the sshd_config
+```
+PubkeyAcceptedAlgorithms +ssh-rsa-cert-v01@openssh.com
+HostkeyAlgorithms +ssh-rsa-cert-v01@openssh.com
+```
